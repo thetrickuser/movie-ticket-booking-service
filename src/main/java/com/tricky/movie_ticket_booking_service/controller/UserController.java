@@ -2,7 +2,6 @@ package com.tricky.movie_ticket_booking_service.controller;
 
 import com.tricky.movie_ticket_booking_service.model.UserDTO;
 import com.tricky.movie_ticket_booking_service.service.UserService;
-import jakarta.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,7 +18,7 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public UserDTO getUser(@PathVariable(value = "id", required = true) String username) {
+    public UserDTO getUser(@PathVariable(value = "id") String username) {
         return userService.getUser(username);
     }
 

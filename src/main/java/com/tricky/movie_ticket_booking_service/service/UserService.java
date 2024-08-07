@@ -26,9 +26,6 @@ public class UserService {
 
     public UserDTO getUser(String username) {
         Optional<User> userEntity = username.matches(".*[a-zA-Z].*") ? userRepository.findByEmail(username) : userRepository.findByPhoneNumber(username);
-        if (userEntity.isPresent()) {
-            return userMapper.mapEntityToDTO(userEntity.get());
-        }
-        return null;
+        return userEntity.map(user -> userMapper.mapEntityToDTO(user)).orElse(null);
     }
 }
