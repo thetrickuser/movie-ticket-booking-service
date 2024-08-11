@@ -12,7 +12,7 @@ public class Booking {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int bookingId;
+    private int id;
 
     @Column(nullable = false)
     private int seats;

@@ -9,7 +9,7 @@ public class Seat {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int seatId;
+    private int id;
 
     @Column(nullable = false)
     private String seatNumber;

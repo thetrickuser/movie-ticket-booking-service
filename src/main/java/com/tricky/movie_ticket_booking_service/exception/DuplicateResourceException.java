@@ -1,9 +1,9 @@
 package com.tricky.movie_ticket_booking_service.exception;
 
-public class UserAlreadyExistsException extends Exception {
+public class DuplicateResourceException extends RuntimeException {
     String message;
 
-    public UserAlreadyExistsException(String message) {
+    public DuplicateResourceException(String message) {
         super(message);
         this.message = message;
     }

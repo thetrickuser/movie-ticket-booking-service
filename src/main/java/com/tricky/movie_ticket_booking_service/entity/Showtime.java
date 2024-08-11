@@ -13,7 +13,7 @@ public class Showtime {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int showtimeId;
+    private int id;
 
     @Column(nullable = false)
     private LocalDate showDate;

@@ -7,7 +7,7 @@ import java.util.List;
 
 @Data
 @Entity
-public class Screen {
+public class Genre {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -16,10 +16,6 @@ public class Screen {
     @Column(nullable = false)
     private String name;
 
-    @ManyToOne
-    @JoinColumn(name = "theater_id")
-    private Theater theater;
-
-    @OneToMany(mappedBy = "screen", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Showtime> showtimes;
+    @ManyToMany(mappedBy = "genres")
+    private List<Movie> movies;
 }

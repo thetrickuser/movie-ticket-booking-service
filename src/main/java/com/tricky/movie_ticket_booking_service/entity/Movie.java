@@ -12,16 +12,21 @@ public class Movie {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int movie_id;
+    private int id;
 
     @Column(nullable = false)
     private String title;
 
     @Column(nullable = false)
-    private String genre;
-
-    @Column(nullable = false)
     private int duration;
+
+    @ManyToMany
+    @JoinTable(
+            name = "movie_genre",
+            joinColumns = @JoinColumn(name = "movie_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "genre_id", referencedColumnName = "id")
+    )
+    private List<Genre> genres;
 
     @Column(nullable = false)
     private LocalDate releaseDate;

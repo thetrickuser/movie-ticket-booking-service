@@ -9,7 +9,7 @@ public class UserDTO {
     @NotNull
     private String name;
 
-    private int user_id;
+    private int id;
 
     @NotNull
     private String email;
