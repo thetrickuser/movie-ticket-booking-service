@@ -1,6 +1,4 @@
-create database cinemadb;
-
-use cinemadb;
+use mydb;
 
 CREATE TABLE User (
     user_id INT PRIMARY KEY AUTO_INCREMENT,
@@ -31,7 +29,7 @@ CREATE TABLE Screen (
     screen_id INT PRIMARY KEY AUTO_INCREMENT,
     theater_id INT,
     name VARCHAR(50) NOT NULL,
-    FOREIGN KEY (theater_id) REFERENCES Theaters(theater_id)
+    FOREIGN KEY (theater_id) REFERENCES Theater(theater_id)
 );
 
 CREATE TABLE Showtime (
@@ -40,8 +38,8 @@ CREATE TABLE Showtime (
     screen_id INT,
     show_date DATE,
     show_time TIME,
-    FOREIGN KEY (movie_id) REFERENCES Movies(movie_id),
-    FOREIGN KEY (screen_id) REFERENCES Screens(screen_id)
+    FOREIGN KEY (movie_id) REFERENCES Movie(movie_id),
+    FOREIGN KEY (screen_id) REFERENCES Screen(screen_id)
 );
 
 CREATE TABLE Booking (
@@ -50,8 +48,8 @@ CREATE TABLE Booking (
     showtime_id INT,
     seats INT NOT NULL,
     booking_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (user_id) REFERENCES Users(user_id),
-    FOREIGN KEY (showtime_id) REFERENCES Showtimes(showtime_id)
+    FOREIGN KEY (user_id) REFERENCES User(user_id),
+    FOREIGN KEY (showtime_id) REFERENCES Showtime(showtime_id)
 );
 
 CREATE TABLE Seat (
@@ -60,8 +58,8 @@ CREATE TABLE Seat (
     seat_number VARCHAR(10),
     is_booked BOOLEAN DEFAULT FALSE,
     booking_id INT,
-    FOREIGN KEY (showtime_id) REFERENCES Showtimes(showtime_id),
-    FOREIGN KEY (booking_id) REFERENCES Bookings(booking_id)
+    FOREIGN KEY (showtime_id) REFERENCES Showtime(showtime_id),
+    FOREIGN KEY (booking_id) REFERENCES Booking(booking_id)
 );
 
 CREATE TABLE Payment (
@@ -69,5 +67,5 @@ CREATE TABLE Payment (
     booking_id INT,
     amount DECIMAL(10, 2) NOT NULL,
     payment_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (booking_id) REFERENCES Bookings(booking_id)
+    FOREIGN KEY (booking_id) REFERENCES Booking(booking_id)
 );

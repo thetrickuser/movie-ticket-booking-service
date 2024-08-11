@@ -9,9 +9,11 @@ public class UserDTO {
     @NotNull
     private String name;
 
+    private int user_id;
+
     @NotNull
     private String email;
     private String phoneNumber;
-    private String password;
+    private transient String password;
     private String userType;
 }

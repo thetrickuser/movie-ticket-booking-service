@@ -13,28 +13,35 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/users")
 public class UserController {
 
+    private final UserService userService;
+
     @Autowired
-    private UserService userService;
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
 
     @PostMapping("/")
-    public ResponseEntity<UserDTO> addUser(@RequestBody UserDTO user) throws UserAlreadyExistsException, UserNotFoudException {
+    public ResponseEntity<UserDTO> addUser(@RequestBody UserDTO user) throws UserAlreadyExistsException {
         UserDTO response = userService.addUser(user);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @GetMapping("/{id}")
-    public UserDTO getUser(@PathVariable(value = "id") String username) throws UserNotFoudException {
-        return userService.getUser(username);
+    public ResponseEntity<UserDTO> getUser(@PathVariable(value = "id") String username) throws UserNotFoudException {
+        UserDTO user = userService.getUser(username);
+        return ResponseEntity.ok(user);
     }
 
-    /*
-     TODO add update user endpoint
-     TODO add delete user endpoint
-    */
-
     @PutMapping("/{id}")
-    public UserDTO updateUser(@PathVariable(value = "id") String username, @RequestBody UserDTO userDTO) throws UserNotFoudException {
-        return userService.updateUser(username, userDTO);
+    public ResponseEntity<UserDTO> updateUser(@PathVariable(value = "id") int userId, @RequestBody UserDTO userDTO) throws UserNotFoudException {
+        UserDTO updatedUser = userService.updateUser(userId, userDTO);
+        return ResponseEntity.ok(updatedUser);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteUser(@PathVariable int id) throws UserNotFoudException {
+        userService.deleteUser(id);
+        return ResponseEntity.noContent().build();
     }
 
 }

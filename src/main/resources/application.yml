@@ -8,7 +8,7 @@ spring:
   application:
     name: movie-ticket-booking-service
   datasource:
-    url: jdbc:mysql://localhost:3306/cinemadb
+    url: jdbc:mysql://localhost:3306/mydb
     username: rayzr
     password: password
     driver-class-name: com.mysql.cj.jdbc.Driver

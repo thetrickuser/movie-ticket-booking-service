@@ -1,34 +1,31 @@
 package com.tricky.movie_ticket_booking_service.aspect;
 
+import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.*;
 import org.springframework.stereotype.Component;
 
 @Aspect
 @Component
+@Slf4j
 public class LoggingAspect {
 
-    @Pointcut("execution(public * com.tricky.movie_ticket_booking_service.service.*.*(..))")
-    public void allServiceMethods() {}
+    @Pointcut("execution(* com.tricky.movie_ticket_booking_service..*(..))")
+    public void applicationMethods() {}
 
-    @Before("allServiceMethods()")
+    @Before("applicationMethods()")
     public void logBefore(JoinPoint joinPoint) {
-        System.out.println("Before method: " + joinPoint.getSignature().getName());
+        log.info("Entering method: {} in class: {}", joinPoint.getSignature().getName(), joinPoint.getTarget().getClass().getSimpleName());
     }
 
-    @After("allServiceMethods()")
+    @After("applicationMethods()")
     public void logAfter(JoinPoint joinPoint) {
-        System.out.println("After method: " + joinPoint.getSignature().getName());
+        log.info("Exiting method: {} in class: {}", joinPoint.getSignature().getName(), joinPoint.getTarget().getClass().getSimpleName());
     }
 
-    @AfterThrowing(pointcut = "allServiceMethods()", throwing = "error")
+    @AfterThrowing(pointcut = "applicationMethods()", throwing = "error")
     public void logAfterThrowing(JoinPoint joinPoint, Throwable error) {
-        System.out.println("Method threw exception: " + error);
+        log.error("Method {} in class {} threw exception: {}", joinPoint.getSignature().getName(), joinPoint.getTarget().getClass().getSimpleName(), error.getMessage());
     }
-
-    @AfterReturning(pointcut = "allServiceMethods()", returning = "result")
-    public void logAfterReturning(JoinPoint joinPoint, Object result) {
-        System.out.println("Result: " + result.toString());
-    }
-
 }
+
