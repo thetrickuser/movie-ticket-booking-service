@@ -8,6 +8,8 @@ import com.tricky.movie_ticket_booking_service.model.UserDTO;
 import com.tricky.movie_ticket_booking_service.repository.UserRepository;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -17,11 +19,13 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final UserMapper userMapper;
+    private final AuthenticationManager authenticationManager;
 
     @Autowired
-    public UserService(UserRepository userRepository, UserMapper userMapper) {
+    public UserService(UserRepository userRepository, UserMapper userMapper, AuthenticationManager authenticationManager) {
         this.userRepository = userRepository;
         this.userMapper = userMapper;
+        this.authenticationManager = authenticationManager;
     }
 
     public UserDTO addUser(UserDTO request) throws DuplicateResourceException {
@@ -53,5 +57,12 @@ public class UserService {
     public void deleteUser(int id) throws ResourceNotFoundException {
         if (!userRepository.existsById(id)) throw new ResourceNotFoundException("User does not exist");
         userRepository.deleteById(id);
+    }
+
+    public UserDTO login(UserDTO request) throws ResourceNotFoundException {
+        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
+        Optional<User> userEntity = userRepository.findByEmail(request.getEmail());
+
+        return userEntity.map(userMapper::toDTO).orElseThrow(() -> new ResourceNotFoundException("User not found"));
     }
 }

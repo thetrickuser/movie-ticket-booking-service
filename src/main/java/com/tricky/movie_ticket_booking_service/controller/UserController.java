@@ -4,6 +4,7 @@ import com.tricky.movie_ticket_booking_service.exception.DuplicateResourceExcept
 import com.tricky.movie_ticket_booking_service.exception.ResourceNotFoundException;
 import com.tricky.movie_ticket_booking_service.model.UserDTO;
 import com.tricky.movie_ticket_booking_service.service.UserService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -43,5 +44,18 @@ public class UserController {
         userService.deleteUser(id);
         return ResponseEntity.noContent().build();
     }
+
+    @PostMapping("/register")
+    public ResponseEntity<UserDTO> register(@RequestBody @Valid UserDTO request) {
+        UserDTO response = userService.addUser(request);
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<UserDTO> login(@RequestBody @Valid UserDTO request) {
+        UserDTO response = userService.login(request);
+        return ResponseEntity.ok().body(response);
+    }
+
 
 }

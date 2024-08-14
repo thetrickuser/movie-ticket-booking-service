@@ -4,14 +4,20 @@ import com.tricky.movie_ticket_booking_service.entity.User;
 import com.tricky.movie_ticket_booking_service.model.UserDTO;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 @Mapper(componentModel = "spring")
 @Component
-public interface UserMapper {
+public abstract class UserMapper {
 
-    User toEntity(UserDTO dto);
+    @Autowired
+    PasswordEncoder passwordEncoder;
+
+    @Mapping(target = "password", expression = "java(passwordEncoder.encode(dto.getPassword()))")
+    public abstract User toEntity(UserDTO dto);
 
     @Mapping(target = "password", ignore = true)
-    UserDTO toDTO(User entity);
+    public abstract UserDTO toDTO(User entity);
 }
