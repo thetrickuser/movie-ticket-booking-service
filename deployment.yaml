@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: movie-booking-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: movie-booking-service
+  template:
+    metadata:
+      labels:
+        app: movie-booking-service
+    spec:
+      containers:
+        - name: movie-booking-service
+          image: thetrickuser/movie-app-backend:latest
+          ports:
+            - containerPort: 8080
+          env:
+            - name: SPRING_DATASOURCE_URL
+              value: jdbc:mysql://mysql:3306/mydb
+            - name: SPRING_DATASOURCE_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: mysql-secret
+                  key: mysql-user
+            - name: SPRING_DATASOURCE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mysql-secret
+                  key: mysql-password
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: movie-booking-service
+spec:
+  type: LoadBalancer
+  ports:
+    - port: 8080
+  selector:
+    app: movie-booking-service

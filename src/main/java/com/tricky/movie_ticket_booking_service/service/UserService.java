@@ -10,6 +10,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -59,10 +60,9 @@ public class UserService {
         userRepository.deleteById(id);
     }
 
-    public UserDTO login(UserDTO request) throws ResourceNotFoundException {
-        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
-        Optional<User> userEntity = userRepository.findByEmail(request.getEmail());
-
-        return userEntity.map(userMapper::toDTO).orElseThrow(() -> new ResourceNotFoundException("User not found"));
+    public UserDTO login(UserDTO request) {
+        User principal = (User) authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword())).getPrincipal();
+        return userMapper.toDTO(principal);
     }
 }

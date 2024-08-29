@@ -31,6 +31,8 @@ public class Movie {
     @Column(nullable = false)
     private LocalDate releaseDate;
 
+    private String imageUrl;
+
     @OneToMany(mappedBy = "movie", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Showtime> showtimes;
 }

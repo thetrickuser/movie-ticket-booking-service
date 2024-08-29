@@ -28,13 +28,15 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<UserDTO> getUser(@PathVariable(value = "id") String username) throws ResourceNotFoundException {
+    public ResponseEntity<UserDTO> getUser(@PathVariable(value = "id") String username)
+            throws ResourceNotFoundException {
         UserDTO user = userService.getUser(username);
         return ResponseEntity.ok(user);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<UserDTO> updateUser(@PathVariable(value = "id") int userId, @RequestBody UserDTO userDTO) throws ResourceNotFoundException {
+    public ResponseEntity<UserDTO> updateUser(@PathVariable(value = "id") int userId, @RequestBody UserDTO userDTO)
+            throws ResourceNotFoundException {
         UserDTO updatedUser = userService.updateUser(userId, userDTO);
         return ResponseEntity.ok(updatedUser);
     }
@@ -56,6 +58,5 @@ public class UserController {
         UserDTO response = userService.login(request);
         return ResponseEntity.ok().body(response);
     }
-
 
 }
